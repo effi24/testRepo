@@ -1,0 +1,19 @@
+name: k8s Deployment
+run-name: deploying from ${{ inputs.repo }} to ${{ inputs.environment }}
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: string
+        description: environment
+  
+permissions: write-all
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+
+      - run: |            
+          echo "This is action was triggered fine"
