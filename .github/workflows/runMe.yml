@@ -16,4 +16,4 @@ jobs:
     steps:
 
       - run: |            
-          echo "This is action was triggered fine"
+          echo "This is action was triggered fine, ENV: ${{ inputs.environment }}"
