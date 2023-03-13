@@ -49,4 +49,7 @@ jobs:
               sed -i '' 's/\$s3bucket/=("\${{ needs.set-env.outputs.S3_BUCKET }}")'/g ./fastlane/Matchfile
             else # assume it is Ubuntu
               sed -i 's/\$s3bucket/=("\${{ needs.set-env.outputs.S3_BUCKET }}")'/g ./fastlane/Matchfile
-            fi 
+            fi
+            
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1            
