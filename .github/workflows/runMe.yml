@@ -35,10 +35,8 @@ jobs:
             runner: macos-12    
     steps:
       - name: create Matchfile
-        working-directory: ding-tenant-app
         run: |
           mkdir fastlane
-          touch ./fastlane/Matchfile
           echo s3_bucket=$s3 > ./fastlane/Matchfile
     
       - name: Setting s3 bucket for fastlane
