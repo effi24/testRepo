@@ -38,7 +38,6 @@ jobs:
         working-directory: ding-tenant-app
         run: |
           mkdir fastlane
-        
           echo s3_bucket=$s3 > ./fastlane/Matchfile
     
       - name: Setting s3 bucket for fastlane
