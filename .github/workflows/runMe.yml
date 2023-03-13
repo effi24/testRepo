@@ -37,9 +37,7 @@ jobs:
       - name: clone reoo
         uses: actions/checkout@v3
         with:
-          path: ding-tenant-app
-          token: ${{ secrets.JENKINS_PAT }}
-          fetch-depth: 0    
+          path: ding-tenant-app 
           
       - name: Setting s3 bucket for fastlane
         working-directory: ding-tenant-app
