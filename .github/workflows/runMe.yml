@@ -41,6 +41,7 @@ jobs:
     
       - name: Setting s3 bucket for fastlane
         run: |
+            echo ${{ needs.set-env.outputs.S3_BUCKET }}
             if [[ "$OSTYPE" == "darwin"* ]]; then
               sed -i '' 's/\$s3bucket/=("\${{ needs.set-env.outputs.S3_BUCKET }}")'/g ./fastlane/Matchfile
             else # assume it is Ubuntu
