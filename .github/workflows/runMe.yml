@@ -34,19 +34,14 @@ jobs:
           - target: ios
             runner: macos-12    
     steps:
-      - name: create Matchfile
-        run: |
-          mkdir fastlane
-          echo s3_bucket=$s3bucket > ./fastlane/Matchfile
-          less ./fastlane/Matchfile
     
       - name: Setting s3 bucket for fastlane
         run: |
             echo ${{ needs.set-env.outputs.S3_BUCKET }}
             if [[ "$OSTYPE" == "darwin"* ]]; then
-              sed -i '' 's/\$s3bucket/=("\${{ needs.set-env.outputs.S3_BUCKET }}")'/g ./fastlane/Matchfile
+              sed -i '' 's/\$s3_bucket/=("\${{ needs.set-env.outputs.S3_BUCKET }}")'/g ./fastlane/Matchfile
             else # assume it is Ubuntu
-              sed -i 's/\$s3bucket/=("\${{ needs.set-env.outputs.S3_BUCKET }}")'/g ./fastlane/Matchfile
+              sed -i 's/\$s3_bucket/=("\${{ needs.set-env.outputs.S3_BUCKET }}")'/g ./fastlane/Matchfile
             fi
             less ./fastlane/Matchfile
             
