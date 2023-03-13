@@ -10,10 +10,43 @@ on:
 permissions: write-all
 
 jobs:
-  deployment:
+  set-env:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    if: github.event.pull_request.merged == true
     steps:
+      - id: identify
+        run: |
+            echo "deplying to production"
+            echo "S3_BUCKET=ding-tenant-app-ios-certificates-prod" >> $GITHUB_OUTPUT
+    outputs:
+      ENVIRONMENT: ${{ steps.identify.outputs.ENVIRONMENT }}
+      S3_BUCKET: ${{ steps.identify.outputs.S3_BUCKET }}
 
-      - run: |            
-          echo "This is action was triggered fine, ENV: ${{ inputs.environment }}"
+  deployment:
+    runs-on: ${{ matrix.runner }}
+    needs: set-env
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ["ios", "android"]
+        include:
+          - target: android
+            runner: ubuntu-22.04
+          - target: ios
+            runner: macos-12    
+    steps:
+      - name: create Matchfile
+        working-directory: ding-tenant-app
+        run: |
+          mkdir fastlane
+        
+          echo s3_bucket=$s3 > ./fastlane/Matchfile
+    
+      - name: Setting s3 bucket for fastlane
+        working-directory: ding-tenant-app
+        run: |
+            if [[ "$OSTYPE" == "darwin"* ]]; then
+              sed -i '' 's/\$s3bucket/=("\${{ needs.set-env.outputs.S3_BUCKET }}")'/g ./fastlane/Matchfile
+            else # assume it is Ubuntu
+              sed -i 's/\$s3bucket/=("\${{ needs.set-env.outputs.S3_BUCKET }}")'/g ./fastlane/Matchfile
+            fi 
