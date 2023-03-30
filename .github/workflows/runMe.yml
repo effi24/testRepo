@@ -16,7 +16,7 @@ jobs:
       - id: identify
         run: |
             echo "deplying to production"
-            echo "result=fail" >> $GITHUB_OUTPUT
+            echo "result=success" >> $GITHUB_OUTPUT
             echo "STOPDEPLOY=no" >> $GITHUB_OUTPUT
     outputs:
       result: ${{ steps.identify.outputs.result }}
