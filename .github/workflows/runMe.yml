@@ -18,11 +18,13 @@ jobs:
     steps:
       - id: identify
         run: |
-            echo ${{ env.TEST_ENV }}
+            echo test env in identify step:  ${{ env.TEST_ENV }}
+            echo "TEST_ENV=master" >> $GITHUB_OUTPUT
             
       - id: test
         run: |
-          echo ${{ env.TEST_ENV }}
+          echo test env in identify step: ${{ env.TEST_ENV }}
+          echo "TEST_ENV=main" >> $GITHUB_OUTPUT
           
     outputs:
       STOPDEPLOY: ${{ env.TEST_ENV }}
@@ -34,4 +36,5 @@ jobs:
     steps:
       - name: print env
         run: |
+          echo "should print main"
           echo ${{ needs.deployServices.outputs.STOPDEPLOY }}
