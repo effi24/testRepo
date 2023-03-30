@@ -11,6 +11,7 @@ permissions: write-all
 
 jobs:
   deployServices:
+    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - id: identify
