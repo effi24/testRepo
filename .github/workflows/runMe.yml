@@ -13,13 +13,19 @@ jobs:
   deployServices:
     continue-on-error: true
     runs-on: ubuntu-latest
+    env:
+      TEST_ENV: "test"
     steps:
       - id: identify
         run: |
-            echo "deplying to production"
-            echo "STOPDEPLOY=no" >> $GITHUB_OUTPUT
+            echo ${{ env.TEST_ENV }}
+            
+      - id: test
+        run: |
+          echo ${{ env.TEST_ENV }}
+          
     outputs:
-      STOPDEPLOY: ${{ steps.identify.outputs.STOPDEPLOY }}
+      STOPDEPLOY: ${{ env.TEST_ENV }}
 
   deployment:
     needs: deployServices
@@ -28,4 +34,4 @@ jobs:
     steps:
       - name: print env
         run: |
-          echo ${{ needs.deployServices.result }}
+          echo ${{ needs.deployServices.outputs.STOPDEPLOY }}
