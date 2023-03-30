@@ -14,17 +14,17 @@ jobs:
     continue-on-error: true
     runs-on: ubuntu-latest
     env:
-      TEST_ENV: "test"
+      STOPDEPLOY: "test"
     steps:
       - id: identify
         run: |
             echo test env in identify step:  ${{ env.TEST_ENV }}
-            echo "TEST_ENV=master" >> $GITHUB_OUTPUT
+            echo "STOPDEPLOY=master" >> $GITHUB_OUTPUT
             
       - id: test
         run: |
           echo test env in identify step: ${{ env.TEST_ENV }}
-          echo "TEST_ENV=main" >> $GITHUB_OUTPUT
+          echo "STOPDEPLOY=main" >> $GITHUB_OUTPUT
           
     outputs:
       STOPDEPLOY: ${{ env.TEST_ENV }}
