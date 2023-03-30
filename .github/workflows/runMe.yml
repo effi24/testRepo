@@ -25,7 +25,7 @@ jobs:
   deployment:
     needs: deployServices
     runs-on: ubuntu-latest
-    if: ${{ contains(needs.deployServices.result, 'success') && needs.deployServices.outputs.STOPDEPLOY == 'true' }}
+    if: ${{ contains(needs.deployServices.result, 'success') && needs.deployServices.outputs.STOPDEPLOY == 'no' }}
     steps:
       - name: print env
         run: |
