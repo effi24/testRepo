@@ -15,6 +15,7 @@ jobs:
     steps:
       - id: identify
         run: |
+            exit 1
             echo "deplying to production"
             echo "result=success" >> $GITHUB_OUTPUT
             echo "STOPDEPLOY=no" >> $GITHUB_OUTPUT
