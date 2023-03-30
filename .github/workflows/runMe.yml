@@ -10,45 +10,23 @@ on:
 permissions: write-all
 
 jobs:
-  set-env:
+  deployServices:
     runs-on: ubuntu-latest
     steps:
       - id: identify
         run: |
             echo "deplying to production"
-            echo "S3_BUCKET=ding-tenant-app-ios-certificates-prod" >> $GITHUB_OUTPUT
+            echo "result=success" >> $GITHUB_OUTPUT
+            echo "STOPDEPLOY=no" >> $GITHUB_OUTPUT
     outputs:
-      ENVIRONMENT: ${{ steps.identify.outputs.ENVIRONMENT }}
-      S3_BUCKET: ${{ steps.identify.outputs.S3_BUCKET }}
+      result: ${{ steps.identify.outputs.result }}
+      STOPDEPLOY: ${{ steps.identify.outputs.STOPDEPLOY }}
 
   deployment:
-    runs-on: ${{ matrix.runner }}
-    needs: set-env
-    strategy:
-      fail-fast: false
-      matrix:
-        target: ["ios", "android"]
-        include:
-          - target: android
-            runner: ubuntu-22.04
-          - target: ios
-            runner: macos-12    
+    needs: deployServices
+    runs-on: ubuntu-latest
+    if: ( ${{needs.deployServices.result }} == "success" && ${{ needs.deployServices.outputs.STOPDEPLOY }} == "no" )
     steps:
-      - name: clone reoo
-        uses: actions/checkout@v3
-        with:
-          path: ding-tenant-app 
-          
-      - name: Setting s3 bucket for fastlane
-        working-directory: ding-tenant-app
+      - name: print env
         run: |
-            echo ${{ needs.set-env.outputs.S3_BUCKET }}
-            if [[ "$OSTYPE" == "darwin"* ]]; then
-              sed -i '' 's/\$s3_bucket/=("\${{ needs.set-env.outputs.S3_BUCKET }}")'/g ./fastlane/Matchfile
-            else # assume it is Ubuntu
-              sed -i 's/\$s3_bucket/=("\${{ needs.set-env.outputs.S3_BUCKET }}")'/g ./fastlane/Matchfile
-            fi
-            less ./fastlane/Matchfile
-            
-#       - name: Setup upterm session
-#         uses: lhotari/action-upterm@v1            
+          echo "here"
