@@ -26,14 +26,8 @@ jobs:
           echo test env in identify step: ${{ env.TEST_ENV }}
           echo "STOPDEPLOY=main" >> $GITHUB_OUTPUT
           
-    outputs:
-      STOPDEPLOY: ${{ env.TEST_ENV }}
-
-  deployment:
-    needs: deployServices
-    runs-on: ubuntu-latest
-    steps:
-      - name: print env
+      - id: test2
         run: |
-          echo "should print main"
-          echo ${{ needs.deployServices.outputs.STOPDEPLOY }}
+          echo test env in identify step: ${{ env.TEST_ENV }}
+          echo $STOPDEPLOY         
+          
