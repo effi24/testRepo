@@ -29,5 +29,5 @@ jobs:
       - id: test2
         run: |
           echo test env in identify step: ${{ env.TEST_ENV }}
-          echo $STOPDEPLOY         
+          echo ${{ env.STOPDEPLOY }}        
           
