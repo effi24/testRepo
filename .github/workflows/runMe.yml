@@ -17,4 +17,6 @@ jobs:
           export TIME=$(TZ=Asia/Jerusalem date +%H:%M:%S.%3N-%d.%m.%Y)
           echo "RESULT_FILE=$TIME-report.html" >> $GITHUB_OUTPUT
           echo $TIME
+          export TIME=$(TZ=Asia/Jerusalem date +%H:%M:%S.%3N-%d.%m.%Y)
+          echo $TIME
 
