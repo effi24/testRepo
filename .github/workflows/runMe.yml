@@ -2,10 +2,6 @@ name: k8s Deployment
 run-name: deploying from ${{ inputs.repo }} to ${{ inputs.environment }}
 on:
   workflow_dispatch:
-    inputs:
-      environment:
-        type: string
-        description: environment
   
 permissions: write-all
 
@@ -13,21 +9,12 @@ jobs:
   deployServices:
     continue-on-error: true
     runs-on: ubuntu-latest
-    env:
-      STOPDEPLOY: "test"
     steps:
-      - id: identify
+      - name: Run POSTMAN collection
+        continue-on-error: true
+        id: postman
         run: |
-            echo test env in identify step:  ${{ env.TEST_ENV }}
-            echo "STOPDEPLOY=master" >> $GITHUB_OUTPUT
-            
-      - id: test
-        run: |
-          echo test env in identify step: ${{ env.TEST_ENV }}
-          echo "STOPDEPLOY=main" >> $GITHUB_OUTPUT
-          
-      - id: test2
-        run: |
-          echo test env in identify step: ${{ env.TEST_ENV }}
-          echo ${{ env.STOPDEPLOY }}        
-          
+          export TIME=$(TZ=Asia/Jerusalem date +%H:%M:%S.%3N-%d.%m.%Y)
+          echo "RESULT_FILE=$TIME-report.html" >> $GITHUB_OUTPUT
+          echo $RESULT_FILE
+
